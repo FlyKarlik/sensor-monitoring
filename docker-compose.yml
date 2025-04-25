@@ -5,12 +5,12 @@ services:
     container_name: sensor-monitoring
     restart: unless-stopped
     build:
-      context: ../
+      context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
-      - ../.env
+      - .env
     environment:
       - APP__SENSOR_MONITORING__AUTH_KEY=${APP__SENSOR_MONITORING__AUTH_KEY}
       - APP__SENSOR_MONITORING__SERVICE_HOST=${APP__SENSOR_MONITORING__HOST}
