@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  sensor-monitoring:
+    container_name: sensor-monitoring
+    restart: unless-stopped
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    environment:
+      - APP__SENSOR_MONITORING__AUTH_KEY=${APP__SENSOR_MONITORING__AUTH_KEY}
+      - APP__SENSOR_MONITORING__SERVICE_HOST=${APP__SENSOR_MONITORING__HOST}
+      - APP__SENSOR_MONITORING__SERVICE_PORT=${APP__SENSOR_MONITORING__PORT}
+      - APP__SENSOR_MONITORING__LOG_LEVEL=${APP__SENSOR_MONITORING__LOG_LEVEL}
+      - APP__SENSOR_MONITORING__MODE=${APP__SENSOR_MONITORING__MODE}
+      - APP__SENSOR_MONITORING__NAME=${APP__SENSOR_MONITORING__NAME}
+      - INFRA__POSTGRES__HOST=${INFRA__POSTGRES__HOST}
+      - INFRA__POSTGRES__PORT=${INFRA__POSTGRES__PORT}
+      - INFRA__POSTGRES__USER=${INFRA__POSTGRES__USER}
+      - INFRA__POSTGRES__PASSWORD=${INFRA__POSTGRES__PASSWORD}
+      - INFRA__POSTGRES__DATABASE=${INFRA__POSTGRES__DATABASE}
+
