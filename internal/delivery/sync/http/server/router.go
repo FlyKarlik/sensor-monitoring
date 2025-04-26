@@ -18,8 +18,8 @@ func initRouter(logger logger.Logger, cfg *config.Config, h *handler.Handler) *g
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowCredentials: true,
-		AllowMethods:     []string{"PUT", "POST", "PATCH", "GET", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-type"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
 	}))
 
 	router.GET("/health", h.HealthCheck)
