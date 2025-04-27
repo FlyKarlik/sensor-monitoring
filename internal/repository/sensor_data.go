@@ -4,7 +4,6 @@ import (
 	"context"
 	"sensor-monitoring/internal/domain"
 	"sensor-monitoring/internal/repository/dao"
-	"sensor-monitoring/pkg/generics"
 	"sensor-monitoring/pkg/logger"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -23,8 +22,13 @@ func newSensorDataRepository(db *pgxpool.Pool, logger logger.Logger) ISensorData
 }
 
 func (r *sensorDataRepository) CountSensorData(ctx context.Context, filter domain.SensorDataFilterInput) (int64, error) {
-	rows, err := r.db.Query(ctx, countSensorData,
-		generics.NullCheck(filter.InferredBrand),
+	filterDAO := new(dao.SensorDataFilterDAO).FromSensorDataFilterInput(&filter)
+	rows, err := r.db.Query(ctx,
+		countSensorData,
+		filterDAO.InferredBrand,
+		filterDAO.Attestation,
+		filterDAO.HasRecording,
+		filterDAO.MinLengthTranscript,
 	)
 	if err != nil {
 		r.logger.Error("repository", "CountSensorData.Query", "error counting sensor data", err)
@@ -45,12 +49,17 @@ func (r *sensorDataRepository) CountSensorData(ctx context.Context, filter domai
 }
 
 func (r *sensorDataRepository) SearchSensorData(ctx context.Context, input domain.SearchSensorDataInput) ([]domain.SensorData, error) {
-	rows, err := r.db.Query(ctx, searchSensorData,
-		generics.NullCheck(input.InferredBrand),
-		generics.NullCheck(input.SortInput.IsReverse),
-		generics.NullCheck(input.SortInput.Field),
-		generics.NullCheck(input.PaginationInput.Limit),
-		generics.NullCheck(input.PaginationInput.Page),
+	filterDAO := new(dao.SensorDataFilterDAO).FromSensorDataFilterInput(&input.SensorDataFilterInput)
+	rows, err := r.db.Query(ctx,
+		searchSensorData,
+		filterDAO.InferredBrand,
+		filterDAO.Attestation,
+		filterDAO.HasRecording,
+		filterDAO.MinLengthTranscript,
+		filterDAO.SortInput.IsReverse,
+		filterDAO.SortInput.Field,
+		filterDAO.PaginationInput.Limit,
+		filterDAO.PaginationInput.Page,
 	)
 	if err != nil {
 		r.logger.Error("repository", "SearchSensorData.Query", "error searching sensor data", err)

@@ -35,7 +35,10 @@ type SearchSensorDataInput struct {
 }
 
 type SensorDataFilterInput struct {
-	InferredBrand   *string `json:"inferred_brand,omitempty"`
-	PaginationInput `json:"pagination,omitempty"`
-	SortInput       `json:"sort,omitempty"`
+	InferredBrand       *string          `json:"inferred_brand,omitempty"`
+	Attestation         *AttestationEnum `json:"attestation,omitempty"`
+	HasRecording        *bool            `json:"has_recording,omitempty"`
+	MinLengthTranscript *int             `json:"min_length_transcript,omitempty"`
+	PaginationInput     `json:"pagination,omitempty"`
+	SortInput           `json:"sort,omitempty"`
 }

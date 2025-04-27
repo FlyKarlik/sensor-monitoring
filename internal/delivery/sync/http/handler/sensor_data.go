@@ -19,7 +19,7 @@ func (h *Handler) SearchSensorData(c *gin.Context) {
 	result := h.usecase.ISensorDataUsecase.SearchSensorData(c.Request.Context(), input)
 	if !result.Success {
 		h.logger.Error("handler", "SearchSensorData.SearchSensorData", "failed to search sensor data", result.Error)
-		response.ErrorResponse(c, result.Error.Error(), http.StatusInternalServerError)
+		response.ErrorResponse(c, result.Error.Error(), getStatusFromError(result.Error))
 		return
 	}
 

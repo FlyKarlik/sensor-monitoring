@@ -27,15 +27,32 @@ func (u *sensorDataUsecase) SearchSensorData(ctx context.Context, input domain.S
 		u.logger.Error("usecase", "SearchSensorData.CountSensorData", "failed to count sensor data", err)
 		return generics.ItemsOutput[domain.SensorData]{
 			Success: false,
-			Error:   errs.New("failed to count sensor data"),
+			Error:   errs.ErrFailedToCountSensorData,
+		}
+	}
+
+	if total == 0 {
+		u.logger.Error("usecase", "SearchSensorData.CountSensorData", "no sensor data found", errs.ErrNoSensorData)
+		return generics.ItemsOutput[domain.SensorData]{
+			Success: false,
+			Error:   errs.ErrNoSensorData,
 		}
 	}
 
 	items, err := u.repo.SearchSensorData(ctx, input)
 	if err != nil {
+		u.logger.Error("usecase", "SearchSensorData.SearchSensorData", "failed to search sensor data", err)
 		return generics.ItemsOutput[domain.SensorData]{
 			Success: false,
-			Error:   errs.New("failed to search sensor data"),
+			Error:   errs.ErrFailedToSearchSensorData,
+		}
+	}
+
+	if len(items) == 0 {
+		u.logger.Error("usecase", "SearchSensorData.SearchSensorData", "out of page limit", errs.ErrOutOfPageLimit)
+		return generics.ItemsOutput[domain.SensorData]{
+			Success: false,
+			Error:   errs.ErrOutOfPageLimit,
 		}
 	}
 
