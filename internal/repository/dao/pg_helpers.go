@@ -2,25 +2,26 @@ package dao
 
 import (
 	"database/sql"
+	"sensor-monitoring/pkg/generics"
 	"time"
 )
 
 func toNullString(value *string) sql.NullString {
-	if value == nil {
+	if generics.NullCheck(value) == nil {
 		return sql.NullString{String: "", Valid: false}
 	}
 	return sql.NullString{String: *value, Valid: true}
 }
 
 func toNullBool(value *bool) sql.NullBool {
-	if value == nil {
+	if generics.NullCheck(value) == nil {
 		return sql.NullBool{Bool: false, Valid: false}
 	}
 	return sql.NullBool{Bool: *value, Valid: true}
 }
 
 func toNullInt64(value *int) sql.NullInt64 {
-	if value == nil {
+	if generics.NullCheck(value) == nil {
 		return sql.NullInt64{Int64: 0, Valid: false}
 	}
 	return sql.NullInt64{Int64: int64(*value), Valid: true}
@@ -53,4 +54,11 @@ func fromNullTime(value sql.NullTime) *time.Time {
 		return nil
 	}
 	return &value.Time
+}
+
+func fromNullFloat64(value sql.NullFloat64) *float64 {
+	if !value.Valid {
+		return nil
+	}
+	return &value.Float64
 }

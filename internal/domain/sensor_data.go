@@ -22,8 +22,9 @@ type SensorData struct {
 	RecordingInbound        *string    `json:"recording_inbound,omitempty"`
 	RecordingOutbound       *string    `json:"recording_outbound,omitempty"`
 	InferredBrand           *string    `json:"inferred_brand,omitempty"`
+	InferredBrands          []string   `json:"inferred_brands,omitempty"`
 	Context                 *string    `json:"context,omitempty"`
-	RiskRating              *int       `json:"risk_rating,omitempty"`
+	RiskRating              *float64   `json:"risk_rating,omitempty"`
 	CreatedAt               *time.Time `json:"created_at,omitempty"`
 	UpdatedAt               *time.Time `json:"updated_at,omitempty"`
 	DeletedAt               *time.Time `json:"deleted_at,omitempty"`
@@ -36,6 +37,7 @@ type SearchSensorDataInput struct {
 
 type SensorDataFilterInput struct {
 	InferredBrand       *string          `json:"inferred_brand,omitempty"`
+	InferredBrands      []string         `json:"inferred_brands,omitempty"`
 	Attestation         *AttestationEnum `json:"attestation,omitempty"`
 	HasRecording        *bool            `json:"has_recording,omitempty"`
 	MinLengthTranscript *int             `json:"min_length_transcript,omitempty"`

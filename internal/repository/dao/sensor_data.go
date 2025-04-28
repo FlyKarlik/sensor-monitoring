@@ -25,8 +25,9 @@ type SensorDataDAO struct {
 	RecordingInbound        sql.NullString
 	RecordingOutbound       sql.NullString
 	InferredBrand           sql.NullString
+	InferredBrands          []string
 	Context                 sql.NullString
-	RiskRating              sql.NullInt64
+	RiskRating              sql.NullFloat64
 	CreatedAt               sql.NullTime
 	UpdatedAt               sql.NullTime
 	DeletedAt               sql.NullTime
@@ -35,6 +36,7 @@ type SensorDataDAO struct {
 
 type SensorDataFilterDAO struct {
 	InferredBrand       sql.NullString
+	InferredBrands      []string
 	Attestation         sql.NullString
 	HasRecording        sql.NullBool
 	MinLengthTranscript sql.NullInt64
@@ -63,8 +65,9 @@ func (s *SensorDataDAO) FromDAO() *domain.SensorData {
 		RecordingInbound:        fromNullString(s.RecordingInbound),
 		RecordingOutbound:       fromNullString(s.RecordingOutbound),
 		InferredBrand:           fromNullString(s.InferredBrand),
+		InferredBrands:          s.InferredBrands,
 		Context:                 fromNullString(s.Context),
-		RiskRating:              fromNullInt64(s.RiskRating),
+		RiskRating:              fromNullFloat64(s.RiskRating),
 		CreatedAt:               fromNullTime(s.CreatedAt),
 		UpdatedAt:               fromNullTime(s.UpdatedAt),
 		DeletedAt:               fromNullTime(s.DeletedAt),
@@ -80,6 +83,7 @@ func (s *SensorDataFilterDAO) FromSensorDataFilterInput(domain *domain.SensorDat
 		}
 		return domain.Attestation.StringPtr()
 	}())
+	s.InferredBrands = domain.InferredBrands
 	s.HasRecording = toNullBool(domain.HasRecording)
 	s.MinLengthTranscript = toNullInt64(domain.MinLengthTranscript)
 	s.PaginationInput = new(PaginationDAO).FromPaginationInput(&domain.PaginationInput)

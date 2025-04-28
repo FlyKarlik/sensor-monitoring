@@ -26,6 +26,7 @@ func (r *sensorDataRepository) CountSensorData(ctx context.Context, filter domai
 	rows, err := r.db.Query(ctx,
 		countSensorData,
 		filterDAO.InferredBrand,
+		filterDAO.InferredBrands,
 		filterDAO.Attestation,
 		filterDAO.HasRecording,
 		filterDAO.MinLengthTranscript,
@@ -53,6 +54,7 @@ func (r *sensorDataRepository) SearchSensorData(ctx context.Context, input domai
 	rows, err := r.db.Query(ctx,
 		searchSensorData,
 		filterDAO.InferredBrand,
+		filterDAO.InferredBrands,
 		filterDAO.Attestation,
 		filterDAO.HasRecording,
 		filterDAO.MinLengthTranscript,
@@ -95,6 +97,9 @@ func (r *sensorDataRepository) SearchSensorData(ctx context.Context, input domai
 			&sensor.RecordingInbound,
 			&sensor.RecordingOutbound,
 			&sensor.InferredBrand,
+			&sensor.Context,
+			&sensor.RiskRating,
+			&sensor.InferredBrands,
 		)
 		if err != nil {
 			r.logger.Error("repository", "SearchSensorData.Scan", "error scanning sensor data", err)

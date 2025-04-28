@@ -7,6 +7,7 @@ import (
 
 type Config struct {
 	SensorServiceConfig
+	MigratorConfig
 	Infrastructure
 }
 
@@ -17,6 +18,13 @@ type SensorServiceConfig struct {
 	ServiceName string `env:"APP__SENSOR_MONITORING__NAME"`
 	ServiceHost string `env:"APP__SENSOR_MONITORING__HOST"`
 	ServicePort string `env:"APP__SENSOR_MONITORING__PORT"`
+}
+
+type MigratorConfig struct {
+	LogLevel       string `env:"APP__MIGRATOR__LOG_LEVEL"`
+	AppMode        string `env:"APP__MIGRATOR__MODE"`
+	ServiceName    string `env:"APP__MIGRATOR__NAME"`
+	MigrationsPath string `env:"APP__MIGRATOR__MIGRATIONS_PATH"`
 }
 
 type Infrastructure struct {
